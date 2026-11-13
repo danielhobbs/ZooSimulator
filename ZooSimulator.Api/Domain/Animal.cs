@@ -7,9 +7,9 @@
         public float Health { get; set; }
         public float CriticalThreshold { get; init; }
 
-        public void IntervalElapsed(int percent)
+        public void IntervalElapsedActivities(int healthReductionPercent)
         {
-            ReduceHealth(percent);
+            ReduceHealth(healthReductionPercent);
             AssessAfterInterval();
         }
 
