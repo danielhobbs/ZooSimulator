@@ -1,23 +1,41 @@
-﻿using ZooSimulator.Api.Services;
-
-namespace ZooSimulator.Api.Domain
+﻿namespace ZooSimulator.Api.Domain
 {
     public class Zoo
     {
-        public List<Animal> Animals { get; set; } = new List<Animal>();
-        public Clock Clock { get; }
+        public const int AnimalsPerType = 1;
 
-        private readonly IClockService _clockService = new ClockService();
-                
-        public void AddAnimal(Animal animal)
+        // TODO replace with values from a random source: 0-20 per animal, 10-25 per animal type
+        private const int FixedHealthReductionPercent = 10;
+        private const int FixedFeedPercent = 10;
+
+        private readonly List<Animal> _animals;
+
+        public IReadOnlyList<Animal> Animals => _animals;
+
+        public Zoo(IEnumerable<Animal> animals)
         {
-            Animals.Add(animal);
+            _animals = animals.ToList();
         }
 
-        public Zoo(List<Animal> animals)
+        public static Zoo CreateDefault()
         {
-            Animals = animals;
-            Clock = _clockService.CreateClock();
+            var animals = new List<Animal>();
+
+            for (var i = 0; i < AnimalsPerType; i++) { animals.Add(new Elephant()); }
+            for (var i = 0; i < AnimalsPerType; i++) { animals.Add(new Giraffe()); }
+            for (var i = 0; i < AnimalsPerType; i++) { animals.Add(new Monkey()); }
+
+            return new Zoo(animals);
+        }
+
+        public void IntervalElapsed()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Feed()
+        {
+            throw new NotImplementedException();
         }
     }
 }
