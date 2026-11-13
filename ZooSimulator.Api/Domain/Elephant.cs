@@ -14,7 +14,6 @@
             return Health < CriticalThreshold && Status == AnimalStatus.CannotWalk;
         }
 
-
         public bool CannotWalk()
         {
             return Health < CriticalThreshold && Status == AnimalStatus.Alive;
