@@ -4,7 +4,7 @@
     {
         public AnimalType Type { get; init; }
         public AnimalStatus Status { get; set; }
-        public float Health { get; set; }
+        public float HealthPercent { get; set; }
         public float CriticalThreshold { get; init; }
 
         public void IntervalElapsedActivities(int healthReductionPercent)
@@ -15,22 +15,23 @@
 
         public void Feed(int percent) 
         {
-            Health += percent;
+            // Could use private "IncreaseHealth" here if there was more to it
+            HealthPercent += percent;
         }
 
-        public void ReduceHealth(int percent)
+        private void ReduceHealth(int percent)
         {
-            Health -= percent;
+            HealthPercent -= percent;
         }
 
-        public virtual bool IsDead()
+        public virtual bool MeetsDeathCondition()
         {
-            return Health < CriticalThreshold;
+            return HealthPercent < CriticalThreshold;
         }
 
         public virtual void AssessAfterInterval()
         {
-            if (IsDead())
+            if (MeetsDeathCondition())
             {
                 SetStatus(AnimalStatus.Dead);
             }

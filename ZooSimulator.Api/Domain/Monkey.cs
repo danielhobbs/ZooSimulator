@@ -5,7 +5,7 @@
         public Monkey() 
         {
             Type = AnimalType.Monkey;
-            Health = 100;
+            HealthPercent = 100;
             CriticalThreshold = 30;
         }
     }

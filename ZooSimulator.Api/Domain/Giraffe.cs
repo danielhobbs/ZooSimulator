@@ -5,7 +5,7 @@
         public Giraffe() 
         {
             Type = AnimalType.Giraffe;
-            Health = 100;
+            HealthPercent = 100;
             CriticalThreshold = 50;
         }
     }

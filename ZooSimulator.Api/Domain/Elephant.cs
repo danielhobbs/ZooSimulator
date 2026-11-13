@@ -5,18 +5,18 @@
         public Elephant() 
         {
             Type = AnimalType.Elephant;
-            Health = 100;
+            HealthPercent = 100;
             CriticalThreshold = 70;
         }
 
-        public override bool IsDead()
+        public override bool MeetsDeathCondition()
         {
-            return Health < CriticalThreshold && Status == AnimalStatus.CannotWalk;
+            return HealthPercent < CriticalThreshold && Status == AnimalStatus.CannotWalk;
         }
 
-        public bool CannotWalk()
+        public bool MeetsCannotWalkCondition()
         {
-            return Health < CriticalThreshold && Status == AnimalStatus.Alive;
+            return HealthPercent < CriticalThreshold && Status == AnimalStatus.Alive;
         }
     }
 }
