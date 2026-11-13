@@ -9,19 +9,31 @@
 
         public void IntervalElapsedActivities(int healthReductionPercent)
         {
+            if (Status == AnimalStatus.Dead)
+            {
+                return;
+            }
+
             ReduceHealth(healthReductionPercent);
             AssessAfterInterval();
         }
 
         public void Feed(int percent) 
         {
-            // Could use private "IncreaseHealth" here if there was more to it
-            HealthPercent += percent;
+            if (Status == AnimalStatus.Dead)
+            {
+                return;
+            }
+
+            var newHealth = HealthPercent + (percent * HealthPercent / 100f);
+            HealthPercent = newHealth > 100f ? 100f : newHealth;
+
+            AssessAfterFeed();
         }
 
         private void ReduceHealth(int percent)
         {
-            HealthPercent -= percent;
+            HealthPercent = HealthPercent - (percent * HealthPercent / 100f);
         }
 
         public virtual bool MeetsDeathCondition()
@@ -33,13 +45,11 @@
         {
             if (MeetsDeathCondition())
             {
-                SetStatus(AnimalStatus.Dead);
+                Status = AnimalStatus.Dead;
             }
         }
 
-        private void SetStatus(AnimalStatus status)
-        {
-            Status = status;
-        }
+        public virtual void AssessAfterFeed()
+        { }
     }
 }
