@@ -106,7 +106,7 @@ namespace ZooSimulator.Tests
 
         /////////////////////////
         // Monkey and Giraffe
-        
+
         [Theory]
         [InlineData(AnimalType.Monkey, 30f, 10)]   // 30 - 10% = 27, below 30
         [InlineData(AnimalType.Giraffe, 50f, 10)]  // 50 - 10% = 45, below 50
@@ -238,5 +238,64 @@ namespace ZooSimulator.Tests
         }
 
 
+        [Fact]
+        public void GivenElephantThatCannotWalk_WhenFedToExactly70_ThenAlive()
+        {
+            // Arrange
+            var elephant = new Elephant() { HealthPercent = 56f, Status = AnimalStatus.CannotWalk };
+
+            // Act
+            elephant.Feed(25); // 56 + 25% = 70
+
+            // Assert
+            Assert.Equal(AnimalStatus.Alive, elephant.Status);
+        }
+
+
+        // Health stability
+        [Theory]
+        [InlineData(AnimalType.Monkey, 50f, 10)]     // 50 - 10% = 45, above 30
+        [InlineData(AnimalType.Giraffe, 80f, 10)]    // 80 - 10% = 72, above 50
+        [InlineData(AnimalType.Elephant, 100f, 10)]  // 100 - 10% = 90, above 70
+        public void GivenAliveAnimal_WhenIntervalLeavesHealthAboveThreshold_ThenAlive(AnimalType type, float startingHealth, int reductionPercentage)
+        {
+            // Arrange
+            var animal = CreateAnimal(type, startingHealth);
+
+            // Act
+            animal.IntervalElapsedActivities(reductionPercentage);
+
+            // Assert
+            Assert.Equal(AnimalStatus.Alive, animal.Status);
+        }
+
+        [Fact]
+        public void GivenNewAnimal_WhenCreated_ThenHealthPercentIs100AndStatusIsAlive()
+        {
+            // Arrange and Act
+            var animals = new Animal[] { new Monkey(), new Giraffe(), new Elephant() };
+
+            // Assert
+            Assert.All(animals, animal =>
+            {
+                Assert.Equal(100f, animal.HealthPercent);
+                Assert.Equal(AnimalStatus.Alive, animal.Status);
+            });
+        }
+
+        [Fact]
+        public void GivenAliveAnimal_WhenIntervalElapsesWithZeroReduction_ThenStatusAndHealthPercentUnchanged()
+        {
+            // Arrange
+            var startingHealth = 50f;
+            var animal = new Monkey() { HealthPercent = startingHealth, Status = AnimalStatus.Alive };
+
+            // Act
+            animal.IntervalElapsedActivities(0);
+
+            // Assert
+            Assert.Equal(AnimalStatus.Alive, animal.Status);
+            Assert.Equal(startingHealth, animal.HealthPercent, Tolerance);
+        }
     }
 }

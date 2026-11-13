@@ -9,17 +9,17 @@
             CriticalThreshold = 70;
         }
 
-        public override bool MeetsDeathCondition()
+        protected override bool MeetsDeathCondition()
         {
             return HealthPercent < CriticalThreshold && Status == AnimalStatus.CannotWalk;
         }
 
-        public bool MeetsCannotWalkCondition()
+        private bool MeetsCannotWalkCondition()
         {
             return HealthPercent < CriticalThreshold && (Status == AnimalStatus.Alive || Status == AnimalStatus.CannotWalk);
         }
 
-        public override void AssessAfterInterval()
+        protected override void AssessAfterInterval()
         {
             if (MeetsDeathCondition())
             {
@@ -36,7 +36,7 @@
             Status = AnimalStatus.Alive;
         }
 
-        public override void AssessAfterFeed()
+        protected override void AssessAfterFeed()
         {
             if (MeetsCannotWalkCondition())
             {

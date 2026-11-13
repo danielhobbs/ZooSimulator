@@ -3,6 +3,7 @@
     public abstract class Animal
     {
         public AnimalType Type { get; init; }
+        // TODO Could make protected sets - would need unit tests updated and/or creating constructors
         public AnimalStatus Status { get; set; }
         public float HealthPercent { get; set; }
         public float CriticalThreshold { get; init; }
@@ -36,12 +37,12 @@
             HealthPercent = HealthPercent - (percent * HealthPercent / 100f);
         }
 
-        public virtual bool MeetsDeathCondition()
+        protected virtual bool MeetsDeathCondition()
         {
             return HealthPercent < CriticalThreshold;
         }
 
-        public virtual void AssessAfterInterval()
+        protected virtual void AssessAfterInterval()
         {
             if (MeetsDeathCondition())
             {
@@ -49,7 +50,7 @@
             }
         }
 
-        public virtual void AssessAfterFeed()
+        protected virtual void AssessAfterFeed()
         { }
     }
 }
