@@ -16,10 +16,6 @@
 
     let refreshInProgress = false;
 
-    function enumName(value, names) {
-        return typeof value === 'number' ? names[value] : value;
-    }
-
     function formatTime(time) {
         if (typeof time !== 'string' || time.length < 5) {
             return '--:--';
