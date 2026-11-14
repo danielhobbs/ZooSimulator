@@ -4,7 +4,7 @@ namespace ZooSimulator.Api.Domain
 {
     public class Zoo
     {
-        public const int AnimalsPerType = 5;
+        public const int DefaultAnimalsPerType = 5;
 
         private readonly List<Animal> _animals;
         private readonly Randomiser _healthReductionRandomiser;
@@ -25,9 +25,9 @@ namespace ZooSimulator.Api.Domain
         {
             var animals = new List<Animal>();
 
-            for (var i = 0; i < AnimalsPerType; i++) { animals.Add(new Elephant()); }
-            for (var i = 0; i < AnimalsPerType; i++) { animals.Add(new Giraffe()); }
-            for (var i = 0; i < AnimalsPerType; i++) { animals.Add(new Monkey()); }
+            for (var i = 0; i < DefaultAnimalsPerType; i++) { animals.Add(new Elephant()); }
+            for (var i = 0; i < DefaultAnimalsPerType; i++) { animals.Add(new Giraffe()); }
+            for (var i = 0; i < DefaultAnimalsPerType; i++) { animals.Add(new Monkey()); }
 
             return new Zoo(animals);
         }
