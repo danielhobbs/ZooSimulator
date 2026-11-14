@@ -1,0 +1,192 @@
+:root {
+    --page-background: #f4f5f2;
+    --panel-background: #ffffff;
+    --border: #d9dcd3;
+    --text: #1f2a24;
+    --text-muted: #66706a;
+    --accent: #2f6f4f;
+    --accent-text: #ffffff;
+    --alive: #2f8f57;
+    --cannot-walk: #c98a12;
+    --dead: #9aa09c;
+    --warning-background: #fdf1d7;
+    --warning-text: #6b4a06;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 24px 16px 40px;
+    background: var(--page-background);
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+    line-height: 1.4;
+}
+
+.top-bar,
+.message,
+.enclosures {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.top-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    flex: 1 1 auto;
+    margin: 0;
+    font-size: 1.6rem;
+}
+
+.clock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 18px;
+    background: var(--panel-background);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.clock-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.clock-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+button {
+    padding: 12px 20px;
+    font: inherit;
+    font-weight: 600;
+    color: var(--accent-text);
+    background: var(--accent);
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(1.1);
+}
+
+button:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 2px;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.message {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    background: var(--warning-background);
+    color: var(--warning-text);
+    border-radius: 8px;
+}
+
+.enclosures {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.enclosure {
+    padding: 16px;
+    background: var(--panel-background);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.enclosure h2 {
+    margin: 0 0 12px;
+    font-size: 1.1rem;
+}
+
+.animal-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.animal {
+    display: grid;
+    grid-template-columns: 1.2em 1fr 4em 6em;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-top: 1px solid var(--border);
+}
+
+.animal-number {
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.health-bar {
+    height: 8px;
+    background: var(--page-background);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.health-bar-fill {
+    display: block;
+    height: 100%;
+    background: var(--alive);
+    transition: width 0.4s ease;
+}
+
+.animal-health {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.animal-status {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--alive);
+}
+
+.status-CannotWalk .health-bar-fill {
+    background: var(--cannot-walk);
+}
+
+.status-CannotWalk .animal-status {
+    color: var(--cannot-walk);
+}
+
+.status-Dead .health-bar-fill {
+    background: var(--dead);
+}
+
+.status-Dead .animal-status,
+.status-Dead .animal-health {
+    color: var(--dead);
+}
+
+@media (max-width: 760px) {
+    .enclosures {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Zoo Simulator</title>
+    <link rel="stylesheet" href="zoo.css">
+</head>
 <body>
-    <h1>Zoo Simulator</h1>
+    <header class="top-bar">
+        <h1>Zoo Simulator</h1>
 
-    <p>Zoo time: <span id="zoo-time"></span></p>
+        <div class="clock">
+            <span class="clock-label">Zoo time</span>
+            <span id="zoo-time" class="clock-value">--:--</span>
+        </div>
 
-    <button id="feed-button" type="button">Feed all animals</button>
+        <button id="feed-button" type="button">Feed all animals</button>
+    </header>
 
-    <p id="message" hidden></p>
+    <p id="message" class="message" role="status" hidden></p>
 
-    <main id="enclosures"></main>
+    <main id="enclosures" class="enclosures" aria-live="polite"></main>
 
     <script src="zoo.js"></script>
 </body>
