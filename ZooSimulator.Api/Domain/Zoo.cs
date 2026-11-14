@@ -32,6 +32,7 @@ namespace ZooSimulator.Api.Domain
             return new Zoo(animals);
         }
 
+        // TODO update time according to an interval value being used (e.g. not an hour), then check if Time is turn of the hour (e.g. 10:00, 11:00, etc.) then do the health reduction loop, else bail
         public void ProcessIntervalElapsed()
         {
             Time = Time.AddHours(1);

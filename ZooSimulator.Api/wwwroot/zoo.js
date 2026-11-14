@@ -1,22 +1,25 @@
 (function () {
     'use strict';
 
-    const ANIMAL_TYPES = ['Elephant', 'Giraffe', 'Monkey'];
+    const ZOO_URL = 'api/zoo';
+    const FEED_URL = 'api/zoo/feed';
+    const POLL_INTERVAL_MS = 5000; // 5 seconds = every "15" mins
 
-    // TODO replace with the zoo fetched from the API
-    const SAMPLE_ZOO = {
-        time: '09:00:00',
-        animals: [
-            { type: 'Elephant', status: 'Alive', healthPercent: 100 },
-            { type: 'Elephant', status: 'CannotWalk', healthPercent: 65.5 },
-            { type: 'Giraffe', status: 'Alive', healthPercent: 82.25 },
-            { type: 'Monkey', status: 'Dead', healthPercent: 28 }
-        ]
-    };
+    const ANIMAL_TYPES = ['Elephant', 'Giraffe', 'Monkey'];
 
     const timeElement = document.getElementById('zoo-time');
     const feedButton = document.getElementById('feed-button');
+    const messageElement = document.getElementById('message');
     const enclosuresElement = document.getElementById('enclosures');
+
+    function showMessage(text) {
+        messageElement.textContent = text;
+        messageElement.hidden = false;
+    }
+
+    function clearMessage() {
+        messageElement.hidden = true;
+    }
 
     function render(zoo) {
         timeElement.textContent = zoo.time.substring(0, 5);
@@ -40,15 +43,36 @@
         });
     }
 
-    function refresh() {
-        // TODO get the zoo from the API, then render it
-        render(SAMPLE_ZOO);
+    async function refresh() {
+        try {
+            const response = await fetch(ZOO_URL);
+            if (!response.ok) {
+                throw new Error('Unexpected response ' + response.status);
+            }
+            render(await response.json());
+            clearMessage();
+        } catch (error) {
+            showMessage('Cannot reach the zoo. Retrying...');
+        }
     }
 
-    function feed() {
-        // TODO post to the API, then refresh
+    async function feed() {
+        feedButton.disabled = true;
+
+        try {
+            const response = await fetch(FEED_URL, { method: 'POST' });
+            if (!response.ok) {
+                throw new Error('Unexpected response ' + response.status);
+            }
+            await refresh();
+        } catch (error) {
+            showMessage('Feeding failed. Please try again.');
+        } finally {
+            feedButton.disabled = false;
+        }
     }
 
     feedButton.addEventListener('click', feed);
     refresh();
+    setInterval(refresh, POLL_INTERVAL_MS);
 })();
