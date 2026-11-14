@@ -11,6 +11,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddSingleton<IZooService, ZooService>();
 
+var intervalInSeconds = builder.Configuration.GetValue("Zoo:IntervalInSeconds", 20);
+builder.Services.AddHostedService(provider =>
+    new ClockService(provider.GetRequiredService<IZooService>(), TimeSpan.FromSeconds(intervalInSeconds)));
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

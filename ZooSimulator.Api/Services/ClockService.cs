@@ -1,21 +1,24 @@
-﻿using ZooSimulator.Api.Domain;
-
-namespace ZooSimulator.Api.Services
+﻿namespace ZooSimulator.Api.Services
 {
-    public interface IClockService
+    public class ClockService : BackgroundService
     {
-        Clock CreateClock();
-    }
-    public class ClockService : IClockService
-    {
-        public ClockService()
+        private readonly IZooService _zooService;
+        private readonly TimeSpan _interval;
+
+        public ClockService(IZooService zooService, TimeSpan interval)
         {
-            
+            _zooService = zooService;
+            _interval = interval;
         }
 
-        public Clock CreateClock()
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            return new Clock(20, new TimeOnly(9, 0));
+            using var timer = new PeriodicTimer(_interval);
+
+            while (await timer.WaitForNextTickAsync(stoppingToken))
+            {
+                _zooService.ProcessInterval();
+            }
         }
     }
 }

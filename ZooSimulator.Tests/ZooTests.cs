@@ -120,5 +120,45 @@ namespace ZooSimulator.Tests
                 Assert.InRange(monkey.HealthPercent, 55f, 62.5f);
             }
         }
+
+
+
+        // Time
+
+        [Fact]
+        public void GivenNewZoo_WhenCreated_ThenTimeIsNineOClock()
+        {
+            // Arrange and Act
+            var zoo = Zoo.CreateDefault();
+
+            // Assert
+            Assert.Equal(new TimeOnly(9, 0), zoo.Time);
+        }
+
+        [Fact]
+        public void GivenZoo_WhenIntervalElapses_ThenTimeMovesOnOneHour()
+        {
+            // Arrange
+            var zoo = new Zoo(Array.Empty<Animal>());
+
+            // Act
+            zoo.ProcessIntervalElapsed();
+
+            // Assert
+            Assert.Equal(new TimeOnly(10, 0), zoo.Time);
+        }
+
+        [Fact]
+        public void GivenZoo_WhenTwentyFourIntervalsElapse_ThenTimeIsBackAtNineOClock()
+        {
+            // Arrange
+            var zoo = new Zoo(Array.Empty<Animal>());
+
+            // Act
+            for (var i = 0; i < 24; i++) { zoo.ProcessIntervalElapsed(); }
+
+            // Assert
+            Assert.Equal(new TimeOnly(9, 0), zoo.Time);
+        }
     }
 }

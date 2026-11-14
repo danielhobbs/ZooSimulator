@@ -7,9 +7,11 @@ namespace ZooSimulator.Api.Domain
         public const int AnimalsPerType = 5;
 
         private readonly List<Animal> _animals;
-        public IReadOnlyList<Animal> Animals => _animals;
         private readonly Randomiser _healthReductionRandomiser;
         private readonly Randomiser _feedRandomiser;
+
+        public IReadOnlyList<Animal> Animals => _animals;
+        public TimeOnly Time { get; private set; } = new TimeOnly(9, 0);
 
 
         public Zoo(IEnumerable<Animal> animals, Randomiser? healthReductionRandomiser = null, Randomiser? feedRandomiser = null)
@@ -32,6 +34,8 @@ namespace ZooSimulator.Api.Domain
 
         public void ProcessIntervalElapsed()
         {
+            Time = Time.AddHours(1);
+
             foreach (var animal in _animals)
             {
                 var newHealthRandomPercentage = _healthReductionRandomiser.GetRandomNumber();
