@@ -1,12 +1,10 @@
 @ZooSimulator.Api_HostAddress = http://localhost:5234
 
-GET {{ZooSimulator.Api_HostAddress}}/animals/
+GET {{ZooSimulator.Api_HostAddress}}/api/zoo/
 Accept: application/json
 
 ###
-
-
-POST {{ZooSimulator.Api_HostAddress}}/feed/
-Accept: application/json
+POST {{ZooSimulator.Api_HostAddress}}/api/zoo/feed/
 
 ###
+POST {{ZooSimulator.Api_HostAddress}}/api/zoo/interval/

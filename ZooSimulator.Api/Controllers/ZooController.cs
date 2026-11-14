@@ -6,7 +6,7 @@ namespace ZooSimulator.Api.Controllers
     [ApiController]
     public class ZooController : ControllerBase
     {
-        //TODO: complete this - stubbed only for now
+        // TODO Error handling and logging
 
         private readonly Services.IZooService _zooService;
 
@@ -15,20 +15,27 @@ namespace ZooSimulator.Api.Controllers
             _zooService = zooService;
         }
 
-        [HttpGet(Name = "Zoo")]
+        [HttpGet]
         public IActionResult GetZoo()
         {
-            var zoo = _zooService.GetZoo();
-            return Ok(zoo);
+            return Ok(_zooService.GetZoo());
         }
 
-        [HttpPost(Name = "Feed")]
+        [HttpPost("feed")]
         public IActionResult FeedAnimals()
         {
-            var zoo = _zooService.GetZoo();
-            _zooService.FeedAnimals();   
+            _zooService.FeedAnimals();
 
-            return Ok(zoo);
+            return Ok();
+        }
+
+
+        [HttpPost("interval")]
+        public IActionResult TriggerInterval()
+        {
+            _zooService.ProcessInterval();
+
+            return Ok();
         }
     }
 }
