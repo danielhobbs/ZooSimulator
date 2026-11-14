@@ -1,17 +1,23 @@
-﻿namespace ZooSimulator.Api.Domain
+﻿using ZooSimulator.Api.Helpers;
+
+namespace ZooSimulator.Api.Domain
 {
     public class Zoo
     {
         public const int AnimalsPerType = 5;
 
         private readonly List<Animal> _animals;
-
         public IReadOnlyList<Animal> Animals => _animals;
+        private readonly Randomiser _healthReductionRandomiser;
+        private readonly Randomiser _feedRandomiser;
 
-        public Zoo(IEnumerable<Animal> animals)
+
+        public Zoo(IEnumerable<Animal> animals, Randomiser? healthReductionRandomiser = null, Randomiser? feedRandomiser = null)
         {
             _animals = animals.ToList();
-        }
+            _healthReductionRandomiser = healthReductionRandomiser ?? new Randomiser(0, 20);
+            _feedRandomiser = feedRandomiser ?? new Randomiser(10, 25);
+        }   
 
         public static Zoo CreateDefault()
         {
@@ -28,7 +34,7 @@
         {
             foreach (var animal in _animals)
             {
-                int newHealthRandomPercentage = 10; //TODO: replace with randomiser, 0-20
+                var newHealthRandomPercentage = _healthReductionRandomiser.GetRandomNumber();
                 animal.IntervalElapsedActivities(newHealthRandomPercentage);
             }
         }
@@ -37,7 +43,7 @@
         {
             foreach (var animalType in _animals.GroupBy(a => a.Type))
             {
-                int newFeedRandomPercentage = 10; //TODO: replace with randomiser, 10-25
+                var newFeedRandomPercentage = _feedRandomiser.GetRandomNumber();
                 foreach (var animal in animalType)
                 {
                     animal.Feed(newFeedRandomPercentage);

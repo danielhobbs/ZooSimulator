@@ -1,15 +1,11 @@
 using ZooSimulator.Api.Domain;
+using ZooSimulator.Api.Helpers;
 
 namespace ZooSimulator.Tests
 {
     public class ZooTests
     {
         /* Tests TODO
-
-        Animals reduce health indiviually
-            - random range tests
-        Animals fed at same percentage ... but is still based on their individual health
-
         Clock test: IntervalElapsed is triggered by a "tick" of the clock
          */
 
@@ -56,7 +52,10 @@ namespace ZooSimulator.Tests
         public void GivenZoo_WhenIntervalElapses_ThenEveryAnimalHasHealthPercentReduced()
         {
             // Arrange
-            var zoo = new Zoo(new Animal[] { new Monkey(), new Giraffe(), new Elephant() });
+            var zoo = new Zoo(
+                new Animal[] { new Monkey(), new Giraffe(), new Elephant() },
+                new Randomiser(10, 10),
+                new Randomiser(10, 10));
 
             // Act
             zoo.ProcessIntervalElapsed();
@@ -73,7 +72,10 @@ namespace ZooSimulator.Tests
             // Arrange
             var firstMonkey = new Monkey() { HealthPercent = 50f };
             var secondMonkey = new Monkey() { HealthPercent = 80f };
-            var zoo = new Zoo(new Animal[] { firstMonkey, secondMonkey });
+            var zoo = new Zoo(
+                new Animal[] { firstMonkey, secondMonkey },
+                new Randomiser(10, 10),
+                new Randomiser(10, 10));
 
             // Act
             zoo.Feed();
@@ -82,6 +84,41 @@ namespace ZooSimulator.Tests
             Assert.Equal(55f, firstMonkey.HealthPercent, Tolerance);
             Assert.Equal(88f, secondMonkey.HealthPercent, Tolerance);
         }
+
+
+        // Default random ranges
+
+        [Fact]
+        public void GivenDefaultRandomisers_WhenIntervalElapses_ThenEachAnimalIsReducedByBetween0And20Percent()
+        {
+            for (var run = 0; run < 100; run++)
+            {
+                // Arrange
+                var zoo = new Zoo(new Animal[] { new Monkey(), new Giraffe(), new Elephant() });
+
+                // Act
+                zoo.ProcessIntervalElapsed();
+
+                // Assert - 100 - 20% = 80 at most, 100 - 0% = 100 at least
+                Assert.All(zoo.Animals, animal => Assert.InRange(animal.HealthPercent, 80f, 100f));
+            }
+        }
+
+        [Fact]
+        public void GivenDefaultRandomisers_WhenFed_ThenEachAnimalIsIncreasedByBetween10And25Percent()
+        {
+            for (var run = 0; run < 100; run++)
+            {
+                // Arrange
+                var monkey = new Monkey() { HealthPercent = 50f };
+                var zoo = new Zoo(new Animal[] { monkey });
+
+                // Act
+                zoo.Feed();
+
+                // Assert - 50 + 10% = 55 at least, 50 + 25% = 62.5 at most
+                Assert.InRange(monkey.HealthPercent, 55f, 62.5f);
+            }
+        }
     }
 }
-

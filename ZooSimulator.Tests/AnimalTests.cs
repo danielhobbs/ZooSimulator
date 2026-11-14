@@ -17,7 +17,6 @@ namespace ZooSimulator.Tests
             };
         }
 
-        /////////////////////////
         // Dead animal stays dead
 
         [Fact]
@@ -51,7 +50,6 @@ namespace ZooSimulator.Tests
         }
 
 
-        /////////////////////////
         // Health maths
 
         [Fact]
@@ -104,7 +102,6 @@ namespace ZooSimulator.Tests
         }
 
 
-        /////////////////////////
         // Monkey and Giraffe
 
         [Theory]
@@ -139,7 +136,6 @@ namespace ZooSimulator.Tests
         }
 
 
-        /////////////////////////
         // Elephant
 
         [Fact]
