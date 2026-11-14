@@ -59,7 +59,7 @@ namespace ZooSimulator.Tests
             var zoo = new Zoo(new Animal[] { new Monkey(), new Giraffe(), new Elephant() });
 
             // Act
-            zoo.IntervalElapsed();
+            zoo.ProcessIntervalElapsed();
 
             // Assert - fixed 10% for now: 100 - 10% = 90
             Assert.All(zoo.Animals, animal => Assert.Equal(90f, animal.HealthPercent, Tolerance));

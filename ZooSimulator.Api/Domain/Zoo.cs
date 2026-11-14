@@ -2,11 +2,7 @@
 {
     public class Zoo
     {
-        public const int AnimalsPerType = 1;
-
-        // TODO replace with values from a random source: 0-20 per animal, 10-25 per animal type
-        private const int FixedHealthReductionPercent = 10;
-        private const int FixedFeedPercent = 10;
+        public const int AnimalsPerType = 5;
 
         private readonly List<Animal> _animals;
 
@@ -28,14 +24,25 @@
             return new Zoo(animals);
         }
 
-        public void IntervalElapsed()
+        public void ProcessIntervalElapsed()
         {
-            throw new NotImplementedException();
+            foreach (var animal in _animals)
+            {
+                int newHealthRandomPercentage = 10; //TODO: replace with randomiser, 0-20
+                animal.IntervalElapsedActivities(newHealthRandomPercentage);
+            }
         }
 
         public void Feed()
         {
-            throw new NotImplementedException();
+            foreach (var animalType in _animals.GroupBy(a => a.Type))
+            {
+                int newFeedRandomPercentage = 10; //TODO: replace with randomiser, 10-25
+                foreach (var animal in animalType)
+                {
+                    animal.Feed(newFeedRandomPercentage);
+                }
+            }
         }
     }
 }

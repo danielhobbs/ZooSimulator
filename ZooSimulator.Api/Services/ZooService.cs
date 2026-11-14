@@ -4,31 +4,32 @@ namespace ZooSimulator.Api.Services
 {
     public interface IZooService
     {
-        Zoo CreateZoo();
         Zoo GetZoo();
+        void ProcessInterval();
         void FeedAnimals();
     }
 
     public class ZooService : IZooService
     {
+        private readonly Zoo _zoo;
+
         public ZooService()
         {
-
+            _zoo = Zoo.CreateDefault();
         }
 
-        public Zoo CreateZoo()
+        public void ProcessInterval()
         {
-            throw new NotImplementedException();
+            _zoo.ProcessIntervalElapsed();
         }
-
         public void FeedAnimals()
         {
-            throw new NotImplementedException();
+            _zoo.Feed();
         }
 
         public Zoo GetZoo()
         {
-            throw new NotImplementedException();
+            return _zoo;
         }
     }
 }
